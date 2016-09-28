@@ -1,4 +1,4 @@
-# My-Unity-Game
+# Club-Auto-Sport
 A simple Unity Game
 
 I have a vision of a simple street car racing game fused with a little bit of role playing flavour.
