@@ -1,5 +1,5 @@
 # Car Racing
-A simple Unity Game
+A simple Car Racing Game
 
 I have a vision of a simple street car racing game fused with a little bit of role playing flavour.
 Player would have to compete on streets to earn enough reputation to join a local racing club.
