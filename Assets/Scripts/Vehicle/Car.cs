@@ -24,7 +24,7 @@ public class Car : MonoBehaviour
     public float topSpeed;
 
     private Rigidbody rb;
-    private int balanceCheckCount;
+    private int balanceCheckCounter;
     private float resetTimer;
     private AxleInfo frontAxle;
     private AxleInfo rearAxle;
@@ -162,7 +162,7 @@ public class Car : MonoBehaviour
 
         ApplyDownForce(relativeVelocity);
 
-        rb.AddTorque(transform.up * torque * 1000);
+        //rb.AddTorque(transform.up * torque * 1000);
         //transform.Rotate(0, 1, 0, Space.World);
     }
 
@@ -175,7 +175,7 @@ public class Car : MonoBehaviour
     {
         throttle = 0;
         steer = 0;
-        balanceCheckCount = 0;
+        balanceCheckCounter = 0;
         resetTimer = 0;
         topSpeed = topSpeed * (1 / MPS_TO_KMPH);
     }
@@ -235,11 +235,11 @@ public class Car : MonoBehaviour
 
         if (needBalance)
         {
-            balanceCheckCount++;
+            balanceCheckCounter++;
             BalanceCar(left, right);
         }
         else
-            balanceCheckCount = 0;
+            balanceCheckCounter = 0;
     }
 
     private void BalanceCar(bool[] left, bool[] right)
