@@ -4632,7 +4632,7 @@ MonoBehaviour:
       tangentMode: 136
     - serializedVersion: 2
       time: 1
-      value: 30
+      value: 10
       inSlope: 0
       outSlope: 0
       tangentMode: 136
