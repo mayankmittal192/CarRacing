@@ -4,10 +4,13 @@ public class ThirdPersonCamera : MonoBehaviour
 {
     // Public Variables
     public Transform target = null;
-    public float height = 3f;
-    public float distance = 3f;
-    public float positionDamping = 3f;
-    public float velocityDamping = 3f;
+    public float height = 2.5f;
+    public float minDistance = 5.0f;
+    public float maxDistance = 6.0f;
+    public float minFOV = 55.0f;
+    public float maxFOV = 75.0f;
+    public float positionDamping = 3.0f;
+    public float velocityDamping = 3.0f;
     public LayerMask ignoreLayers = -1;
 
     // Private Variables
@@ -45,9 +48,9 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         // Calculate speed factor and adjust the camera's distance
         // and field of view according to the target's speed
-        float speedFactor = Mathf.Clamp01(targetBody.velocity.magnitude / 70.0f);
-        cam.fieldOfView = Mathf.Lerp(55, 75, speedFactor);
-        float currentDistance = Mathf.Lerp(7.5f, 6.5f, speedFactor);
+        float speedFactor = Mathf.Clamp01(targetBody.velocity.magnitude / 40.0f);
+        cam.fieldOfView = Mathf.Lerp(minFOV, maxFOV, speedFactor);
+        float currentDistance = Mathf.Lerp(maxDistance, minDistance, speedFactor);
         
         // Calculate the target's current velocity direction and
         // adjust the camera's position according to that
