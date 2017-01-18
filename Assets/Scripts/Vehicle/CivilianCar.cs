@@ -7,7 +7,7 @@ public class CivilianCar : Car
     public AnimationCurve accelerationCurve;
     
     // Properties
-    public float acceleration { get; private set; }
+    public float forwardAcceleration { get; private set; }
     public float sidewaysAcceleration { get; private set; }
 
 
@@ -30,7 +30,7 @@ public class CivilianCar : Car
     {
         CalculateVehicleAcceleration();
 
-        float acc = acceleration * Input.GetAxis("Vertical");
+        float acc = forwardAcceleration * Input.GetAxis("Vertical");
         steering = maxSteering * Input.GetAxis("Horizontal");
         
         bool isReversing = Vector3.Dot(body.velocity, car.forward) < 0;
@@ -57,7 +57,7 @@ public class CivilianCar : Car
         float forwardVelocity = Vector3.Dot(body.velocity, car.forward);
         float sidewaysVelocity = Vector3.Dot(body.velocity, car.right);
 
-        acceleration = accelerationCurve.Evaluate(1 - (forwardVelocity / topSpeed));
+        forwardAcceleration = accelerationCurve.Evaluate(1 - (forwardVelocity / topSpeed));
         sidewaysAcceleration = -sidewaysVelocity;
 
         Debug.Log("Speed: " + (int)(forwardVelocity * 2.237f) + " mph");
