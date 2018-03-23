@@ -72,6 +72,33 @@ public class Car : MonoBehaviour
             body.AddForceAtPosition(-100 * body.transform.up, leftWheel.transform.position, ForceMode.Force);
             body.AddForceAtPosition(-100 * body.transform.up, rightWheel.transform.position, ForceMode.Force);
         }
+
+        public void ApplyExtraForceAt(Rigidbody body, bool isLeftWheel)
+        {
+            if (isLeftWheel)
+                body.AddForceAtPosition(-500 * body.transform.up, leftWheel.transform.position, ForceMode.Force);
+            else
+                body.AddForceAtPosition(-500 * body.transform.up, rightWheel.transform.position, ForceMode.Force);
+        }
+
+        public bool IsGrounded(out bool leftGrounded, out bool rightGrounded)
+        {
+            bool grounded = true;
+            leftGrounded = false;
+            rightGrounded = false;
+
+            if (Physics.Raycast(leftWheel.position, -leftWheel.up, leftTireRadius + 0.05f))
+                leftGrounded = true;
+            else
+                grounded = false;
+
+            if (Physics.Raycast(rightWheel.position, -rightWheel.up, rightTireRadius + 0.05f))
+                rightGrounded = true;
+            else
+                grounded = false;
+
+            return grounded;
+        }
     }
 
 

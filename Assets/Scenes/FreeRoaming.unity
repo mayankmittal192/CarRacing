@@ -235,7 +235,7 @@ MonoBehaviour:
     drivable: 1
     steerable: 0
   centerOfMass: {fileID: 1828283367}
-  maxSteering: 35
+  maxSteering: 30
   topSpeed: 100
   accelerationCurve:
     serializedVersion: 2
@@ -255,6 +255,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  resetTime: 5
 --- !u!1 &85
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,8 +1100,8 @@ Transform:
   m_PrefabParentObject: {fileID: 400018, guid: cee848381ce4c475e8c14e1a67ad1ddb, type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 72}
-  m_LocalRotation: {x: -0.008651425, y: 0.92318565, z: 0.0012104037, w: 0.3842551}
-  m_LocalPosition: {x: 929.12, y: 101.17, z: 817.7}
+  m_LocalRotation: {x: 0.0021839454, y: 0.91749656, z: -0.0050383033, w: 0.39770588}
+  m_LocalPosition: {x: 929.29, y: 101.15, z: 817.89}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_Children:
   - {fileID: 517}
@@ -1115,7 +1116,7 @@ Transform:
   - {fileID: 511}
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: -0.509, y: 134.807, z: -0.86200005}
+  m_LocalEulerAnglesHint: {x: 0.629, y: 133.13, z: 0}
 --- !u!4 &520
 Transform:
   m_ObjectHideFlags: 0
