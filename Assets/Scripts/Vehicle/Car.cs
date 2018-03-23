@@ -12,6 +12,8 @@ public class Car : MonoBehaviour
 
     // Variables
     public float maxSteering;
+    public int topSpeed;
+    public AnimationCurve accelerationCurve;
     protected float currSpeed;
 
     // Cached components

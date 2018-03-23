@@ -9,7 +9,6 @@ public class ThirdPersonCamera : MonoBehaviour
     public float maxDistance = 6.0f;
     public float minFOV = 55.0f;
     public float maxFOV = 75.0f;
-    public float positionDamping = 3.0f;
     public float velocityDamping = 3.0f;
     public LayerMask ignoreLayers = -1;
 

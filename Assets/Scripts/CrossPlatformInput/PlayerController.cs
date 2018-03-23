@@ -2,7 +2,7 @@
 
 public class PlayerController {
 
-    // COntroller object (be it any kind of controller: keyboard, gamepad, or mobile)
+    // Controller object (be it any kind of controller: keyboard, gamepad, or mobile)
     private IController controller;
 
 
