@@ -11,6 +11,14 @@ public class RacingCar : Car
 	// Update is called once per frame
 	protected override void Update ()
     {
-        	
+        StabilizeCar();	
 	}
+
+    private void StabilizeCar()
+    {
+        foreach (var axle in axleInfo)
+        {
+
+        }
+    }
 }

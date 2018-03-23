@@ -15,38 +15,32 @@ Material:
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: f96a23d3e754c4c93a0864a2977d048f, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _BumpMap
-        second:
-          m_Texture: {fileID: 2800000, guid: cdfe52ed0750141f2b3d8e34b6adeda4, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
+    - first:
+        name: _BumpMap
+      second:
+        m_Texture: {fileID: 2800000, guid: cdfe52ed0750141f2b3d8e34b6adeda4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 2800000, guid: f96a23d3e754c4c93a0864a2977d048f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-      data:
-        first:
-          name: _Cutoff
-        second: 0.2238806
-      data:
-        first:
-          name: _Shininess
-        second: 0.01
+    - first:
+        name: _Cutoff
+      second: 0.2238806
+    - first:
+        name: _Shininess
+      second: 0.01
     m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 0.2554348, g: 0.2554348, b: 0.2554348, a: 1}
-      data:
-        first:
-          name: _SpecColor
-        second: {r: 0.4945652, g: 0.4945652, b: 0.4945652, a: 0}
+    - first:
+        name: _Color
+      second: {r: 0.2554348, g: 0.2554348, b: 0.2554348, a: 1}
+    - first:
+        name: _SpecColor
+      second: {r: 0.4945652, g: 0.4945652, b: 0.4945652, a: 0}
 --- !u!1002 &2100001
 EditorExtensionImpl:
   serializedVersion: 6

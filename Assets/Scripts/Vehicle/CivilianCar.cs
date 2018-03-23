@@ -39,7 +39,7 @@ public class CivilianCar : Car
         {
             if (axle.steerable)
             {
-                car.Rotate(car.up, steering * Time.fixedDeltaTime * (isReversing ? -1 : 1));
+                car.Rotate(car.up, steering * Time.fixedDeltaTime * Mathf.Min(1, currSpeed / 2));
             }
             if (axle.drivable)
             {
@@ -60,6 +60,7 @@ public class CivilianCar : Car
         forwardAcceleration = accelerationCurve.Evaluate(1 - (forwardVelocity / topSpeed));
         sidewaysAcceleration = -sidewaysVelocity;
 
+        currSpeed = forwardVelocity;
         Debug.Log("Speed: " + (int)(forwardVelocity * 2.237f) + " mph");
     }
 }

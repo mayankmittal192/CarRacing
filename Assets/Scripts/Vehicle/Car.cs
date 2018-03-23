@@ -12,6 +12,7 @@ public class Car : MonoBehaviour
 
     // Variables
     public float maxSteering;
+    protected float currSpeed;
 
     // Cached components
     protected Transform car;
@@ -28,23 +29,40 @@ public class Car : MonoBehaviour
     {
         public Transform leftWheel;
         public Transform rightWheel;
+        public Transform leftTireGraphics;
+        public Transform rightTireGraphics;
+        private float leftTireRadius;
+        private float rightTireRadius;
+        private float leftWheelAngle;
+        private float rightWheelAngle;
         private Collider leftWheelCollider;
         private Collider rightWheelCollider;
         public bool drivable;
         public bool steerable;
 
+        public void Setup(Car car)
+        {
+            leftTireRadius = leftTireGraphics.GetComponent<Renderer>().bounds.size.y * 0.5f;
+            rightTireRadius = rightTireGraphics.GetComponent<Renderer>().bounds.size.y * 0.5f;
+            leftWheelAngle = leftWheel.localEulerAngles.y;
+            rightWheelAngle = rightWheel.localEulerAngles.y;
+        }
+
         public void ApplyWheelSteering(Car car)
         {
             if (steerable)
             {
-                leftWheel.transform.localEulerAngles = new Vector3(0, car.steering, 0);
-                rightWheel.transform.localEulerAngles = new Vector3(0, car.steering, 0);
+                leftWheel.localEulerAngles = new Vector3(0, leftWheelAngle + car.steering, 0);
+                rightWheel.localEulerAngles = new Vector3(0, rightWheelAngle + car.steering, 0);
             }
         }
 
-        public void ApplyWheelRotation(Rigidbody carBody)
+        public void ApplyWheelRotation(Car car)
         {
-            
+            float leftRotationAngle = (car.currSpeed / leftTireRadius) * Mathf.Rad2Deg * Time.deltaTime;
+            float rightRotationAngle = (car.currSpeed / rightTireRadius) * Mathf.Rad2Deg * Time.deltaTime;
+            leftTireGraphics.Rotate(leftRotationAngle, 0, 0);
+            rightTireGraphics.Rotate(rightRotationAngle, 0, 0);
         }
 
         public void ApplyDownForce(Rigidbody body)
@@ -67,6 +85,9 @@ public class Car : MonoBehaviour
     {
         // Set the vehicle's center of mass
         body.centerOfMass = centerOfMass.transform.localPosition;
+
+        // Setup axles
+        SetupAxles();
     }
 
     // Update is called once per frame
@@ -80,13 +101,21 @@ public class Car : MonoBehaviour
     {
 
     }
-
+    
+    private void SetupAxles()
+    {
+        foreach (var axle in axleInfo)
+        {
+            axle.Setup(this);
+        }
+    }
 
     private void UpdateWheelVisuals()
     {
         foreach (var axle in axleInfo)
         {
             axle.ApplyWheelSteering(this);
+            axle.ApplyWheelRotation(this);
         }
     }
 }

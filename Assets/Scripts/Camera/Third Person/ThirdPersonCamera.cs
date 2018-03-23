@@ -55,7 +55,7 @@ public class ThirdPersonCamera : MonoBehaviour
         // Calculate the target's current velocity direction and
         // adjust the camera's position according to that
         Vector3 currentVelocityDirection = currentVelocity.normalized;
-        if (currentVelocity.sqrMagnitude < 0.01f)
+        if (currentVelocity.sqrMagnitude < 0.1f)
         {
             currentVelocityDirection = target.forward.normalized;
         }
