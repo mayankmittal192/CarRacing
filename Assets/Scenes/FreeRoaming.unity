@@ -255,7 +255,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  resetTime: 5
+  resetTime: 3
 --- !u!1 &85
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +668,7 @@ GameObject:
   - component: {fileID: 521}
   - component: {fileID: 959}
   - component: {fileID: 242}
+  - component: {fileID: 243}
   m_Layer: 12
   m_Name: Collider_Bottom
   m_TagString: Untagged
@@ -685,8 +686,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.84226537, z: 0.8233833}
+  m_Center: {x: 0.0039055136, y: -0.07863663, z: -0.040460285}
+--- !u!136 &243
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 241}
+  m_Material: {fileID: 13400000, guid: e95d57b816a6f45fdaddc8d74081481e, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.11446544
+  m_Height: 1.1287729
+  m_Direction: 0
+  m_Center: {x: 0.01, y: -0.11, z: 0.39}
 --- !u!1 &270
 GameObject:
   m_ObjectHideFlags: 0
