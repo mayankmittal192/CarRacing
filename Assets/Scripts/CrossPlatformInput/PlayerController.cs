@@ -6,22 +6,14 @@ public class PlayerController {
     private IController controller;
 
 
-	// Use this for initialization setup
-	public void Setup()
+    // Use this for initialization setup
+    public void Setup(IController controllerPref)
     {
         // new controller object (can be changed by the player during runtime)
-        controller = new KeyboardController();
-        
-        // controller setup (can be re-configured by the player during runtime)
-        controller.SetThrottle(KeyCode.UpArrow);
-        controller.SetBrake(KeyCode.DownArrow);
-        controller.SetLeft(KeyCode.LeftArrow);
-        controller.SetRight(KeyCode.RightArrow);
-        controller.SetNitrous(KeyCode.LeftControl);
-        controller.SetHandbrake(KeyCode.Space);
-        controller.SetSteerLock(KeyCode.X);
-        controller.SetThrottleReacTime(0.05f);
-        controller.SetSteerReacTime(0.03f);
+        controller = controllerPref;
+
+        // default controller settings (can be re-configured by the player during runtime)
+        controller.ApplyDefaultSettings();
 
         // controller setup
         controller.Setup();

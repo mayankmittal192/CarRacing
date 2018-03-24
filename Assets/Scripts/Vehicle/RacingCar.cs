@@ -6,6 +6,9 @@ public class RacingCar : Car
     public float resetTime;
     private int balanceCheckCounter;
     private float resetTimer;
+    
+    public KeyboardController keyboardController;
+    private PlayerController playerController;
 
     // Properties
     public float forwardAcceleration { get; private set; }
@@ -16,28 +19,37 @@ public class RacingCar : Car
     protected override void Awake()
     {
         base.Awake();
+        keyboardController = new KeyboardController();
+        playerController = new PlayerController();
     }
 
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
+        playerController.Setup(keyboardController);
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+        playerController.Poll(Time.deltaTime);
         StabilizeCar();
     }
 
     // FixedUpdate is called after each fixed time interval
     protected override void FixedUpdate()
     {
+        // compute the vehicle accelerations in both the directions
         CalculateVehicleAcceleration();
 
-        float acc = forwardAcceleration * Input.GetAxis("Vertical");
-        steering = maxSteering * Input.GetAxis("Horizontal");
+        // consume the player input values
+        throttle = playerController.Throttle();
+        float steer = playerController.Steer();
+
+        float acc = forwardAcceleration * throttle;
+        steering = maxSteering * steer;
         bool isReversing = Vector3.Dot(body.velocity, car.forward) < 0;
 
         foreach (var axle in axleInfo)
@@ -60,6 +72,11 @@ public class RacingCar : Car
 
             axle.ApplyDownForce(body);
         }
+    }
+
+    private void processInput()
+    {
+
     }
 
     private void CalculateVehicleAcceleration()

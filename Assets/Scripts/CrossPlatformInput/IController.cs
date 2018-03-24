@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-public interface IController {
-
+public interface IController
+{
     // Getter Methods
     float GetThrottle();
     float GetSteering();
@@ -21,7 +21,7 @@ public interface IController {
     void SetSteerReacTime(float t);
 
     // Operational Methods
+    void ApplyDefaultSettings();
     void Setup();
     void Poll(float dt);
-    
 }

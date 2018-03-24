@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 /// <summary>
 /// This is keyboard input system designed with the aim of converting sudden key press actions to smooth
 /// to smooth and gradual analog actions. This is done because in real life, any driver will gradually
@@ -11,7 +10,7 @@
 /// continuity experience.
 /// </summary>
 /// TODO: Nitro key functionality ///
-
+[System.Serializable]
 public class KeyboardController : IController {
 
     // Input Key Allotment Settings
@@ -48,13 +47,27 @@ public class KeyboardController : IController {
     private float timeStep;
 
     // Numerical Constants  (fine-tune these parameters to get fluid and smooth response)
-    private float ACC_INC = 0.008f;
-    private float STEER_INC = 0.009f;
+    private float ACC_INC = 0.08f;
+    private float STEER_INC = 0.09f;
     private float MAX_ACC = 1;
     private float MAX_STEER = 1;
     private float IDLE_ACCELERATION_FACTOR = 0.76f;
     private float IDLE_STEERING_FACTOR = 0.72f;
 
+
+    // Apply default keyboard input configuration
+    public void ApplyDefaultSettings()
+    {
+        SetThrottle(KeyCode.UpArrow);
+        SetBrake(KeyCode.DownArrow);
+        SetLeft(KeyCode.LeftArrow);
+        SetRight(KeyCode.RightArrow);
+        SetNitrous(KeyCode.LeftControl);
+        SetHandbrake(KeyCode.Space);
+        SetSteerLock(KeyCode.X);
+        SetThrottleReacTime(0.05f);
+        SetSteerReacTime(0.03f);
+    }
 
 	// Use this for initialization setup
 	public void Setup()
