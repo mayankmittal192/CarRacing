@@ -13,7 +13,6 @@ using UnityEngine;
 
 public class FPSCounter : MonoBehaviour
 {
-
     public double updateInterval = 1.0f;
     private double accum = 0.0f;        // FPS accumulated over the interval
     private double frames = 0;          // Frames drawn over the interval
@@ -21,6 +20,7 @@ public class FPSCounter : MonoBehaviour
     private double fps = 15.0f;         // Current FPS
     private double lastSample;
     private int gotIntervals = 0;
+
 
     void Start()
     {
@@ -64,5 +64,4 @@ public class FPSCounter : MonoBehaviour
     {
         return gotIntervals > 2;
     }
-
 }

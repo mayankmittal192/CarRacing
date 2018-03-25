@@ -49,7 +49,7 @@ public class RacingCar : Car
         float steer = playerController.Steer();
 
         float acc = forwardAcceleration * throttle;
-        steering = maxSteering * steer;
+        steering = maxSteerAngle * steer;
         bool isReversing = Vector3.Dot(body.velocity, car.forward) < 0;
 
         foreach (var axle in axleInfo)
@@ -57,9 +57,9 @@ public class RacingCar : Car
             if (axle.steerable)
             {
                 if (!isReversing)
-                    car.Rotate(car.up, steering * Time.fixedDeltaTime * Mathf.Min(1, currSpeed / 2));
+                    car.Rotate(car.up, steering * Time.fixedDeltaTime * Mathf.Min(1, currentSpeed / 2));
                 else
-                    car.Rotate(car.up, steering * Time.fixedDeltaTime * Mathf.Max(-1, currSpeed / 2));
+                    car.Rotate(car.up, steering * Time.fixedDeltaTime * Mathf.Max(-1, currentSpeed / 2));
             }
             if (axle.drivable)
             {
@@ -74,11 +74,6 @@ public class RacingCar : Car
         }
     }
 
-    private void processInput()
-    {
-
-    }
-
     private void CalculateVehicleAcceleration()
     {
         float forwardVelocity = Vector3.Dot(body.velocity, car.forward);
@@ -87,7 +82,7 @@ public class RacingCar : Car
         forwardAcceleration = accelerationCurve.Evaluate(1 - (forwardVelocity / topSpeed));
         sidewaysAcceleration = -sidewaysVelocity;
 
-        currSpeed = forwardVelocity;
+        currentSpeed = forwardVelocity;
         Debug.Log("Speed: " + (int)(forwardVelocity * 2.237f) + " mph");
     }
 

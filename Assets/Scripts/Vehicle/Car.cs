@@ -11,10 +11,10 @@ public class Car : MonoBehaviour
     public GameObject centerOfMass;
 
     // Variables
-    public float maxSteering;
+    public float maxSteerAngle;
     public int topSpeed;
     public AnimationCurve accelerationCurve;
-    protected float currSpeed;
+    protected float currentSpeed;
 
     // Cached components
     protected Transform car;
@@ -42,6 +42,7 @@ public class Car : MonoBehaviour
         public bool drivable;
         public bool steerable;
 
+
         public void Setup(Car car)
         {
             leftTireRadius = leftTireGraphics.GetComponent<Renderer>().bounds.size.y * 0.5f;
@@ -61,8 +62,8 @@ public class Car : MonoBehaviour
 
         public void ApplyWheelRotation(Car car)
         {
-            float leftRotationAngle = (car.currSpeed / leftTireRadius) * Mathf.Rad2Deg * Time.deltaTime;
-            float rightRotationAngle = (car.currSpeed / rightTireRadius) * Mathf.Rad2Deg * Time.deltaTime;
+            float leftRotationAngle = (car.currentSpeed / leftTireRadius) * Mathf.Rad2Deg * Time.deltaTime;
+            float rightRotationAngle = (car.currentSpeed / rightTireRadius) * Mathf.Rad2Deg * Time.deltaTime;
             leftTireGraphics.Rotate(leftRotationAngle, 0, 0);
             rightTireGraphics.Rotate(rightRotationAngle, 0, 0);
         }
@@ -126,10 +127,7 @@ public class Car : MonoBehaviour
 	}
 
     // FixedUpdate is called at fixed time intervals
-    protected virtual void FixedUpdate()
-    {
-
-    }
+    protected virtual void FixedUpdate() { }
     
     private void SetupAxles()
     {
