@@ -1,36 +1,67 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// This is a path AI managing component for defining and maintaining various segments in a particular lane of a racing track 
+/// level. This is the bottom-most component in the path AI system hierarchy. Each object of this class would represent a 
+/// segment of a particular lane containing a pair of way points which guide the AI vehicle trajectory.
+/// </summary>
 public class Segment
 {
-    private const float ANGLE_DIFFERENCE_THRESHOLD = 5.0f;
+    // Handle point should not be calculated in the usual way if the angle between 
+    // the starting point and ending point is less than this constant variable.
+    private const float MINIMUM_ANGLE_DIFFERENCE = 5.0f;
 
-    public WayPoint startWayPoint { get; private set; }
-    public WayPoint endWayPoint { get; private set; }
-    public Vector3 handlePoint { get; set; }
+    // Way points - starting and ending
+    public Lane.WayPoint startWayPoint { get; private set; }
+    public Lane.WayPoint endWayPoint { get; private set; }
+    
+    // Handle point of this segment
+    public Vector3 handlePoint { get; private set; }
 
 
-    public Segment(WayPoint start, WayPoint end)
+    // Constructor
+    public Segment(Lane.WayPoint start, Lane.WayPoint end)
     {
         startWayPoint = start;
         endWayPoint = end;
 
+        // calculate the handle point in its usual way only if the angle difference between the 
+        // starting and ending way points is greater than the minimum allowed angle difference value.
         float angleDifference = Vector3.Angle(startWayPoint.direction, endWayPoint.direction);
-        if (angleDifference > ANGLE_DIFFERENCE_THRESHOLD)
+        if (angleDifference > MINIMUM_ANGLE_DIFFERENCE)
             handlePoint = GetIntersectingPoint(startWayPoint, endWayPoint);
         else
             handlePoint = (startWayPoint.position + endWayPoint.position) / 2;
     }
 
-    public Vector3 getParametricPoint(float t)
+
+    // Get a point on this segment's imaginary line segment (connecting the starting and ending way points) 
+    // according to a parametric variable. Value of this parametric variable is in the range between 0 and 1, 
+    // mapping 0 to the starting way point, 1 to the ending way point and any other intermediate value to its 
+    // scaled counterpart on that imaginary line segment. (For instance 0.5 maps to the exact middle point of 
+    // the line segment)
+    public Vector3 getLinearParametricPoint(float t)
+    {
+        return Vector3.Lerp(startWayPoint.position, endWayPoint.position, t);
+    }
+
+
+    // Get a point on this segment's imaginary smooth curve according to a parametric variable. 
+    // Value of this parametric variable is in the range between 0 and 1, mapping 0 to the 
+    // starting way point, 1 to the ending way point and any other intermediate value to its 
+    // scaled counterpart on that imaginary curve. (For instance 0.5 maps to the exact middle 
+    // point of the curve)
+    public Vector3 getBiLinearParametricPoint(float t)
     {
         Vector3 lerp1 = Vector3.Lerp(startWayPoint.position, handlePoint, t);
         Vector3 lerp2 = Vector3.Lerp(handlePoint, endWayPoint.position, t);
         return Vector3.Lerp(lerp1, lerp2, t);
     }
 
-    private Vector3 GetIntersectingPoint(WayPoint p1, WayPoint p2)
+
+    // Calculate and returns the handle point of the segment defined as the 
+    // intersecting point of the starting and ending way points on the x-z plane.
+    private Vector3 GetIntersectingPoint(Lane.WayPoint p1, Lane.WayPoint p2)
     {
         float a1 = p1.direction.z;
         float b1 = -p1.direction.x;

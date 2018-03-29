@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 
-public class PlayerController {
-
+/// <summary>
+/// Input controller for the player. It wraps a controller object implementing IController interface which 
+/// facilitates the runtime changing and initialization of controller hardware, for instance: keyboard, gamepad, 
+/// tablet or mobile etc.
+/// </summary>
+public class PlayerController
+{
     // Controller object (be it any kind of controller: keyboard, gamepad, or mobile)
     private IController controller;
 
@@ -18,6 +23,7 @@ public class PlayerController {
         // controller setup
         controller.Setup();
 	}
+
 
     // Poll is called once per frame in which input polling will be done and results will be
     // analysed based on the amount of skipped time i.e deltaTime.

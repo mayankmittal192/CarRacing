@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+// Third person view camera for player car. Interpolates smoothly at turns and accelerations.
+/// </summary>
 public class ThirdPersonCamera : MonoBehaviour
 {
     // Public Variables
@@ -25,8 +28,10 @@ public class ThirdPersonCamera : MonoBehaviour
     private Rigidbody targetBody;
 
 
+    // Use this for initialization
     void Start()
     {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
         raycastLayers = ~ignoreLayers;
         trans = GetComponent<Transform>();
         cam = GetComponent<Camera>();
@@ -34,24 +39,28 @@ public class ThirdPersonCamera : MonoBehaviour
         targetBody = target.GetComponent<Rigidbody>();
     }
 
+
+    // Gets called at fixed time intervals
     void FixedUpdate()
     {
-        // Calculate the target's current velocity by interpolating it with its
-        // previous velocity so as to keep things pretty smooth
+        // calculate the target's current velocity by interpolating it 
+        // with its previous velocity so as to keep things pretty smooth
         currentVelocity = Vector3.Lerp(previousVelocity, targetBody.velocity, velocityDamping * Time.deltaTime);
         currentVelocity.y = 0;
         previousVelocity = currentVelocity;
     }
 
+
+    // Gets called once per frame after every other game object gets updated
     void LateUpdate()
     {
-        // Calculate speed factor and adjust the camera's distance
+        // calculate speed factor and adjust the camera's distance 
         // and field of view according to the target's speed
         float speedFactor = Mathf.Clamp01(targetBody.velocity.magnitude / 40.0f);
         cam.fieldOfView = Mathf.Lerp(minFOV, maxFOV, speedFactor);
         float currentDistance = Mathf.Lerp(maxDistance, minDistance, speedFactor);
         
-        // Calculate the target's current velocity direction and
+        // calculate the target's current velocity direction and 
         // adjust the camera's position according to that
         Vector3 currentVelocityDirection = currentVelocity.normalized;
         if (currentVelocity.sqrMagnitude < 0.1f)
@@ -59,12 +68,12 @@ public class ThirdPersonCamera : MonoBehaviour
             currentVelocityDirection = target.forward.normalized;
         }
 
-        // Calculate the camera's new position and new look direction
+        // calculate the camera's new position and new look direction
         Vector3 newTargetPosition = targetTrans.position + Vector3.up * height;
         Vector3 newPosition = newTargetPosition - (currentVelocityDirection * currentDistance);
         newPosition.y = newTargetPosition.y;
 
-        // Check if the camera is colliding with any object. If it is, then
+        // check if the camera is colliding with any object. If it is, then 
         // adjust its position so as to avoid the situation of blocked view
         Vector3 targetDirection = newPosition - newTargetPosition;
         if (Physics.Raycast(newTargetPosition, targetDirection, out hit, currentDistance, raycastLayers))
@@ -72,7 +81,7 @@ public class ThirdPersonCamera : MonoBehaviour
             newPosition = hit.point;
         }
 
-        // Finally set the camera's updated position and look direction
+        // finally set the camera's updated position and look direction
         trans.position = newPosition;
         trans.LookAt(newTargetPosition);
     }

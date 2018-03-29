@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Controller interface designed to implement a controller object of any hardware for instance: keyboard, gamepad, 
+/// tablet or mobile etc. which can be changed during runtime.
+/// </summary>
 public interface IController
 {
     // Getter Methods

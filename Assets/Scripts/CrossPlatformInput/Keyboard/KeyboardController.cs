@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// This is keyboard input system designed with the aim of converting sudden key press actions to smooth
-/// to smooth and gradual analog actions. This is done because in real life, any driver will gradually
-/// press or release pedals instead of suddenly pressing or releasing pedals. This system approximately
-/// simulates those real life actions very well upto remarkable degree of accuracy and fluidity. The main
-/// principle involved in designing this system is based on double buffering technique along with some other
-/// modifications like slow buffer evacuation system which enhances the player's overall game fluidity and
+/// This is keyboard input system designed with the aim of converting sudden key press actions to smooth 
+/// to smooth and gradual analog actions. This is done because in real life, any driver will gradually 
+/// press or release pedals instead of suddenly pressing or releasing pedals. This system approximately 
+/// simulates those real life actions very well upto remarkable degree of accuracy and fluidity. The main 
+/// principle involved in designing this system is based on double buffering technique along with some other 
+/// modifications like slow buffer evacuation system which enhances the player's overall game fluidity and 
 /// continuity experience.
 /// </summary>
 /// TODO: Nitro key functionality ///
 [System.Serializable]
-public class KeyboardController : IController {
-
+public class KeyboardController : IController
+{
     // Input Key Allotment Settings
     public KeyCode throttle;
     public KeyCode brake;
@@ -69,6 +69,7 @@ public class KeyboardController : IController {
         SetSteerReacTime(0.03f);
     }
 
+
 	// Use this for initialization setup
 	public void Setup()
     {
@@ -94,6 +95,7 @@ public class KeyboardController : IController {
         rightSteeringBufferEvac = 0;
 	}
 	
+
 	// Poll is called from time to time to poll the input keys
 	public void Poll(float dt)
     {
@@ -115,10 +117,10 @@ public class KeyboardController : IController {
 
 
     /// <summary>
-    /// Inquire keyboard input system for any key presses.
-    /// Converts the keyboard action input mechanism into analog input mechanism.
-    /// Key up and down actions corresponds to the trigger values for analog booleans.
-    /// For example: throttle key down triggers the gradual gas pedal pressing action
+    /// Inquire keyboard input system for any key presses. 
+    /// Converts the keyboard action input mechanism into analog input mechanism. 
+    /// Key up and down actions corresponds to the trigger values for analog booleans. 
+    /// For example: throttle key down triggers the gradual gas pedal pressing action 
     /// and throttle key up triggers the slowly removing leg from the pedal action.
     /// </summary>
     private void SetKeyStates()
@@ -139,11 +141,11 @@ public class KeyboardController : IController {
 
 
     /// <summary>
-    /// Here the magic actually happens where quick keyboard actions are converted
-    /// to the gradual and smooth analog actions by storing impulsive keyboard input
-    /// actions into input buffers and then gradually releasing the 'input energy'.
-    /// It works by first delaying the response time specified by the reaction time of the
-    /// driver and then storing the impulsive keyboard actions into input buffer variables.
+    /// Here the magic actually happens where quick keyboard actions are converted 
+    /// to the gradual and smooth analog actions by storing impulsive keyboard input 
+    /// actions into input buffers and then gradually releasing the 'input energy'. 
+    /// It works by first delaying the response time specified by the reaction time of the 
+    /// driver and then storing the impulsive keyboard actions into input buffer variables. 
     /// Then it sets the buffer evacuation variables when the corresponding key is released.
     /// </summary>
     private void SetInputBuffer()
@@ -215,8 +217,8 @@ public class KeyboardController : IController {
 
 
     /// <summary>
-    /// Throttle value of car is determined the amount of input buffer stored in the
-    /// throttle buffer variables.
+    /// Throttle value of car is determined the amount of input buffer 
+    /// stored in the throttle buffer variables.
     /// </summary>
     private void HandleThrottleValue()
     {
@@ -252,9 +254,10 @@ public class KeyboardController : IController {
         if (Mathf.Abs(acceleration) > MAX_ACC) { acceleration = FindPolarity(acceleration); }
     }
 
+
     /// <summary>
-    /// Steering value of car is determined the amount of input buffer stored in the
-    /// steering buffer variables.
+    /// Steering value of car is determined the amount of input buffer 
+    /// stored in the steering buffer variables.
     /// </summary>
     private void HandleSteeringValue()
     {
@@ -292,12 +295,12 @@ public class KeyboardController : IController {
 
     // Getter Methods
     public float GetThrottle() { return acceleration; }
-
+    
     public float GetSteering() { return steering; }
-
+    
     public bool IsHandbraking()
     {
-        // return true if the key is pressed and false if not, no need for converting
+        // return true if the key is pressed and false if not, no need for converting 
         // it to analog since handbraking is intended to be impulsive.
         if (Input.GetKeyDown(handbrake)) { return true; }
         return false;
