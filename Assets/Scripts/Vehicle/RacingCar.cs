@@ -83,7 +83,7 @@ public class RacingCar : Car
         sidewaysAcceleration = -sidewaysVelocity;
 
         currentSpeed = forwardVelocity;
-        Debug.Log("Speed: " + (int)(forwardVelocity * 2.237f) + " mph");
+        //Debug.Log("Speed: " + (int)(forwardVelocity * 2.237f) + " mph");
     }
 
     private void StabilizeCar()

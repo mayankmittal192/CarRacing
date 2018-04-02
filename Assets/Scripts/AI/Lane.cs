@@ -16,14 +16,20 @@ public class Lane
         public Vector3 position { get; private set; }
         public Vector3 direction { get; private set; }
         
+        public WayPoint(Vector3 pos, Vector3 dir)
+        {
+            position = pos;
+            direction = dir;
+        }
+
         public WayPoint(Lane lane, Path.Node node)
         {
-            if (lane.direction == Lane.Direction.Left)
+            if (lane.direction == Direction.Left)
                 position = node.position - node.right * lane.distance;
             else
                 position = node.position + node.right * lane.distance;
 
-            if (lane.movement == Lane.Movement.Up)
+            if (lane.movement == Movement.Up)
                 direction = node.forward;
             else
                 direction = -node.forward;

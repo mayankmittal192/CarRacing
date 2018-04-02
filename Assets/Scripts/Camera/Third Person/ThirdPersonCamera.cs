@@ -6,7 +6,6 @@ using UnityEngine;
 public class ThirdPersonCamera : MonoBehaviour
 {
     // Public Variables
-    public Transform target = null;
     public float height = 2.5f;
     public float minDistance = 5.0f;
     public float maxDistance = 6.0f;
@@ -16,6 +15,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public LayerMask ignoreLayers = -1;
 
     // Private Variables
+    private Transform target = null;
     private RaycastHit hit = new RaycastHit();
     private LayerMask raycastLayers = -1;
     private Vector3 previousVelocity = Vector3.zero;

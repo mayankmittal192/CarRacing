@@ -49,8 +49,8 @@ public class Path : MonoBehaviour
     private List<Node> nodes = new List<Node>();
 
 
-    // Draw gizmo lines when the object this script is attached to is selected
-    public void OnDrawGizmosSelected()
+    // Draw path nodes for easy debugging
+    public void OnDrawGizmos()
     {
         if (drawInEditor)
         {
@@ -72,7 +72,12 @@ public class Path : MonoBehaviour
                 Gizmos.DrawWireSphere(currentNode, 1.0f);                   // draw a wireframe sphere of radius 1 unit at each node
             }
         }
+    }
 
+
+    // Draw path lanes when the object this script is attached to is selected
+    public void OnDrawGizmosSelected()
+    {
         // draw lane segments only if their drawInEditor variable is checked
         foreach (Lane lane in lanes)
         {

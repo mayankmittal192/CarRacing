@@ -35,23 +35,12 @@ public class Segment
     }
 
 
-    // Get a point on this segment's imaginary line segment (connecting the starting and ending way points) 
-    // according to a parametric variable. Value of this parametric variable is in the range between 0 and 1, 
-    // mapping 0 to the starting way point, 1 to the ending way point and any other intermediate value to its 
-    // scaled counterpart on that imaginary line segment. (For instance 0.5 maps to the exact middle point of 
-    // the line segment)
-    public Vector3 getLinearParametricPoint(float t)
-    {
-        return Vector3.Lerp(startWayPoint.position, endWayPoint.position, t);
-    }
-
-
     // Get a point on this segment's imaginary smooth curve according to a parametric variable. 
     // Value of this parametric variable is in the range between 0 and 1, mapping 0 to the 
     // starting way point, 1 to the ending way point and any other intermediate value to its 
     // scaled counterpart on that imaginary curve. (For instance 0.5 maps to the exact middle 
     // point of the curve)
-    public Vector3 getBiLinearParametricPoint(float t)
+    public Vector3 getParametricPoint(float t)
     {
         Vector3 lerp1 = Vector3.Lerp(startWayPoint.position, handlePoint, t);
         Vector3 lerp2 = Vector3.Lerp(handlePoint, endWayPoint.position, t);

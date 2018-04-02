@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 /// <summary>
 /// Civilian car custom editor for showing all the possible lane options in the civilian car game object's inspector.
@@ -25,6 +26,11 @@ public class CivilianCarEditor : Editor
         base.OnInspectorGUI();
         string[] laneOptions = getLaneOptions();
         laneOptionIdxProp.intValue = EditorGUILayout.Popup("Lane", laneOptionIdxProp.intValue, laneOptions);
+        if (GUILayout.Button("Change Lane"))
+        {
+            CivilianCar car = (CivilianCar)target;
+            car.changeLane();
+        }
         serializedObject.ApplyModifiedProperties();
     }
 
