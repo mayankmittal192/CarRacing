@@ -15,7 +15,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public LayerMask ignoreLayers = -1;
 
     // Private Variables
-    private Transform target = null;
+    public Transform target = null;
     private RaycastHit hit = new RaycastHit();
     private LayerMask raycastLayers = -1;
     private Vector3 previousVelocity = Vector3.zero;
@@ -31,7 +31,7 @@ public class ThirdPersonCamera : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        //target = GameObject.FindGameObjectWithTag("Player").transform;
         raycastLayers = ~ignoreLayers;
         trans = GetComponent<Transform>();
         cam = GetComponent<Camera>();

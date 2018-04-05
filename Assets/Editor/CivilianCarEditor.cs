@@ -10,31 +10,28 @@ public class CivilianCarEditor : Editor
 {
     // Properties to sync with the game object's corresponding variables
     SerializedProperty laneOptionsProp;
-    SerializedProperty laneOptionIdxProp;
+    SerializedProperty laneIndexProp;
 
-    
+
+    // Use this for enabling
     private void OnEnable()
     {
         laneOptionsProp = serializedObject.FindProperty("laneOptions");
-        laneOptionIdxProp = serializedObject.FindProperty("laneOptionIdx");
+        laneIndexProp = serializedObject.FindProperty("laneIndex");
     }
 
-
+    // Use this for what to show when the contents are laid out in editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
         base.OnInspectorGUI();
         string[] laneOptions = getLaneOptions();
-        laneOptionIdxProp.intValue = EditorGUILayout.Popup("Lane", laneOptionIdxProp.intValue, laneOptions);
-        if (GUILayout.Button("Change Lane"))
-        {
-            CivilianCar car = (CivilianCar)target;
-            car.changeLane();
-        }
+        laneIndexProp.intValue = EditorGUILayout.Popup("Lane", laneIndexProp.intValue, laneOptions);
         serializedObject.ApplyModifiedProperties();
     }
 
 
+    // Returns all the available lane options
     private string[] getLaneOptions()
     {
         string[] laneOptions = null;
