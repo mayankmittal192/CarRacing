@@ -3,29 +3,25 @@ using UnityEngine;
 
 public class CivilianCar : Car
 {
-    public enum Mode
-    {
-        Cruise,
-        Alert
-    }
-
-
     // Vehicle Constants
-    private const float VEHICLE_HALF_HEIGHT = 0.8f;     // half of car's height
-    private const float SPEED_TURN_THRESHOLD = 0.1f;    // minimum speed required for car to be able to make turn
+    private const float VEHICLE_HALF_HEIGHT = 0.8f;         // half of car's height
+    private const float SPEED_TURN_THRESHOLD = 0.1f;        // minimum speed required for car to be able to make turn
 
-    // // Speed Parameter Constants
-    private const float SPEED_PARAM_INC_FACTOR = 3500f; // how quickly speed parameter value should increase
-    private const float SPEED_PARAM_DEC_FACTOR = 5000f; // how quickly speed parameter value should decrease
-    private const float MIN_SPEED_PARAMETER = 16f;      // min speed parameter value
-    private const float AVG_SPEED_PARAMETER = 36f;      // avg speed parameter value
-    private const float MAX_SPEED_PARAMETER = 64f;      // max speed parameter value
+    // Speed Parameter Constants
+    private const float SPEED_PARAM_INC_FACTOR = 3.5f;      // how quickly speed parameter value should increase
+    private const float SPEED_PARAM_DEC_FACTOR = 3.5f;      // how quickly speed parameter value should decrease
+    private const float MIN_SPEED_PARAMETER = 15f;          // min speed parameter value
+    private const float AVG_SPEED_PARAMETER = 45f;          // avg speed parameter value
+    private const float MAX_SPEED_PARAMETER = 65f;          // max speed parameter value
+
+    // Vehicle Motion Simulation Constants
+    private const float BRAKING_FACTOR = 0.2f;              // braking force constant for car to apply deceleration
 
     // Wheel Motion Graphics Simulation Constants
-    private const float TURN_RESISTANCE_FACTOR = 0.98f; // how fast should car react to steering forces; greater the value, 
-                                                        // more will be the resistance; value in range 0 to 1; 0 being no 
-                                                        // resistance and 1 is no steering at all
-    private const float STEERING_FACTOR = 4.0f;         // steering angle multiplier for wheel steering graphics simulation
+    private const float TURN_RESISTANCE_FACTOR = 0.985f;    // how fast should car react to steering forces; greater the value, 
+                                                            // more will be the resistance; value in range 0 to 1; 0 being no 
+                                                            // resistance and 1 is no steering at all
+    private const float STEERING_FACTOR = 5.0f;             // steering angle multiplier for wheel steering graphics simulation
 
     // Path variable which it will use
     public Path path;
@@ -35,14 +31,14 @@ public class CivilianCar : Car
 
     // Lane variables
     [HideInInspector]
-    public string[] laneOptions;    // available lane options under the selected path variable
+    public string[] laneOptions;        // available lane options under the selected path variable
     [HideInInspector]
-    public int laneIndex = 0;       // lane index variable
+    public int laneIndex = 0;           // lane index variable
 
     // Braking variables
-    private bool braking;           // whether brakes are applied or not
-    private bool handbraking;       // whether handbrakes are applied or not
-    private float brakingFactor;    // how hard brakes are applied
+    public bool braking;                // whether brakes are applied or not
+    private bool handbraking;           // whether handbrakes are applied or not
+    public float brakingFactor;         // how hard brakes are applied
 
     // Lane segment variables
     private List<Segment> segments;     // active lane segments list
@@ -52,16 +48,15 @@ public class CivilianCar : Car
     private Segment transitionSegment2; // segment to be used while changing lane
 
     // Parametric variables
-    private float speedParameter;   // how quickly the position within a segment should change
-    private bool incSpeedParameter; // whether to increase the speed parameter or decrease it
-    private float t;                // keep track of the position within a segment
+    private float speedParameter;       // how quickly the position within a segment should change
+    private bool incSpeedParameter;     // whether to increase the speed parameter or decrease it
+    private float t;                    // keep track of the position within a segment
 
     // Cached top speed variable for switching from draw mode to other modes
-    //private int cachedTopSpeed;
+    private int cachedTopSpeed;
 
-    // Car object variable with respect to which this car is driving in its mode
-    //private CivilianCar proxima;    // car in proximity which is changing this car's mode to the highest priority
-    //private bool proximaFirstExit;  // whether the proxima car has made its exit for the first time
+    // Changing lane property to indicate whether or not this car is currently between lanes
+    public bool betweenLanes { get; private set; }
 
     // Stats variables
     //private float distance;
@@ -82,6 +77,7 @@ public class CivilianCar : Car
     protected override void Awake()
     {
         base.Awake();
+        mode = new Mode(this);
     }
 
 
@@ -108,12 +104,11 @@ public class CivilianCar : Car
         t = 0;
 
         // set cached top speed value
-        //topSpeed = Random.Range(20, 40);
-        //cachedTopSpeed = topSpeed;
+        //topSpeed = Random.Range(20, 35);
+        cachedTopSpeed = topSpeed;
 
-        // proxima variables
-        //proxima = null;
-        //proximaFirstExit = false;
+        // set the between lanes property
+        betweenLanes = false;
 
         // inititialize car position and orientation
         car.position = currentSegment.startWayPoint.position;
@@ -125,6 +120,7 @@ public class CivilianCar : Car
     protected override void Update()
     {
         base.Update();
+        mode.update();
         stabilizeCar();
 
         //Debug.Log(gameObject.name);
@@ -190,8 +186,8 @@ public class CivilianCar : Car
     }
 
 
-    // Check and sets the current segment to be equal to the transition segment if the car needs lane transition 
-    // but if not then proceeds to the next segment in the active segment list
+    // Check and sets the current segment to be equal to the transition segment if the car needs 
+    // lane transition but if not then proceeds to the next segment in the active segment list
     private void proceedToNextSegment()
     {
         currentSegmentIndex = (currentSegmentIndex + 1) % segments.Count;
@@ -207,7 +203,10 @@ public class CivilianCar : Car
             transitionSegment2 = null;
         }
         else
+        {
             currentSegment = segments[currentSegmentIndex];
+            betweenLanes = false;
+        }
     }
 
 
@@ -251,17 +250,17 @@ public class CivilianCar : Car
         {
             float maxCurrSpeedRatio = (currentSpeed + maxAcc) / desiredSpeed;
             velocity.Scale(new Vector3(maxCurrSpeedRatio, maxCurrSpeedRatio, maxCurrSpeedRatio));
-            incSpeedParameter = true;   // adjust speed parameter
+            incSpeedParameter = true;       // adjust speed parameter
         }
         else
         {
-            if (desiredAcc < -maxAcc)
+            if (desiredAcc < -BRAKING_FACTOR)
             {
-                float maxCurrSpeedRatio = (currentSpeed - maxAcc) / desiredSpeed;
+                float maxCurrSpeedRatio = (currentSpeed - BRAKING_FACTOR) / currentSpeed;
                 velocity.Scale(new Vector3(maxCurrSpeedRatio, maxCurrSpeedRatio, maxCurrSpeedRatio));
             }
 
-            incSpeedParameter = false;  // adjust speed parameter
+            incSpeedParameter = false;      // adjust speed parameter
         }
 
         return velocity;
@@ -281,15 +280,78 @@ public class CivilianCar : Car
     // Adjusts the speed parameter according to which mode the car is in
     private void adjustParameter()
     {
-        switch (mode)
+        switch (mode.type)
         {
-            case Mode.Cruise:
-                speedParameterDynamicAdjustment();
-                break;
+            case Mode.Type.Cruise:
+                {
+                    if (onPassingLane())
+                        speedParameterDynamicAdjustment();
+                    else
+                    {
+                        stabilizeSpeedParameter();
 
-            case Mode.Alert:
-                stabilizeSpeedParameter();
-                break;
+                        if (isSpeedParameterStable())
+                            changeLane();
+                    }
+
+                    topSpeed = cachedTopSpeed;
+                    braking = false;
+
+                    break;
+                }
+
+            case Mode.Type.Alert:
+                {
+                    stabilizeSpeedParameter();
+                    topSpeed = cachedTopSpeed;
+                    break;
+                }
+
+            case Mode.Type.PullOver:
+                {
+                    stabilizeSpeedParameter();
+                    topSpeed = cachedTopSpeed;
+
+                    if (isSpeedParameterStable())
+                        changeLane();
+
+                    break;
+                }
+
+            case Mode.Type.Pass:
+                {
+                    stabilizeSpeedParameter();
+                    topSpeed = cachedTopSpeed;
+                    break;
+                }
+
+            case Mode.Type.Overtake:
+                {
+                    stabilizeSpeedParameter();
+                    topSpeed = cachedTopSpeed;
+                    braking = false;
+                    break;
+                }
+
+            case Mode.Type.Draw:
+                {
+                    stabilizeSpeedParameter();
+                    topSpeed = mode.proximaCar.topSpeed + 1;
+
+                    if (currentSpeed > mode.proximaCar.currentSpeed)
+                        braking = true;
+                    else
+                        braking = false;
+
+                    break;
+                }
+
+            case Mode.Type.Transition:
+                {
+                    stabilizeSpeedParameter();
+                    topSpeed = cachedTopSpeed;
+                    break;
+                }
         }
     }
 
@@ -299,12 +361,12 @@ public class CivilianCar : Car
     {
         if (incSpeedParameter)
         {
-            speedParameter += (currentSpeed * topSpeed) / SPEED_PARAM_INC_FACTOR;
+            speedParameter += (currentSpeed / topSpeed) / SPEED_PARAM_INC_FACTOR;
             speedParameter = Mathf.Min(speedParameter, MAX_SPEED_PARAMETER);
         }
         else
         {
-            speedParameter -= (currentSpeed * topSpeed) / SPEED_PARAM_DEC_FACTOR;
+            speedParameter -= (currentSpeed / topSpeed) / SPEED_PARAM_DEC_FACTOR;
             speedParameter = Mathf.Max(speedParameter, MIN_SPEED_PARAMETER);
         }
     }
@@ -315,9 +377,9 @@ public class CivilianCar : Car
     {
         // adjust the value to gradually bring it to the average value
         if (speedParameter < AVG_SPEED_PARAMETER)
-            speedParameter += (currentSpeed * topSpeed) / SPEED_PARAM_INC_FACTOR;
+            speedParameter += (currentSpeed / topSpeed) / SPEED_PARAM_INC_FACTOR;
         else
-            speedParameter -= (currentSpeed * topSpeed) / SPEED_PARAM_DEC_FACTOR;
+            speedParameter -= (currentSpeed / topSpeed) / SPEED_PARAM_DEC_FACTOR;
     }
 
 
@@ -334,21 +396,20 @@ public class CivilianCar : Car
     // Stabilizes the car's orientation
     private void stabilizeCar()
     {
-        if (mode == Mode.Cruise)
+        if (onPrimaryRoute())
         {
-            if (onPrimaryRoute())
+            if (currentSegmentIndex > 165 && currentSegmentIndex < 170 ||
+                currentSegmentIndex > 190 && currentSegmentIndex < 195 ||
+                currentSegmentIndex > 210 && currentSegmentIndex < 215)
             {
-                if (currentSegmentIndex > 34 && currentSegmentIndex < 44)
-                {
-                    stabilizePosition();
-                    stabilizeOrientation();
-                }
+                stabilizePosition();
+                stabilizeOrientation();
             }
-            else
+        }
+        else
+        {
+            if (currentSegmentIndex > 35 && currentSegmentIndex < 45)
             {
-                if (currentSegmentIndex > 165 && currentSegmentIndex < 170 || 
-                    currentSegmentIndex > 190 && currentSegmentIndex < 195 || 
-                    currentSegmentIndex > 210 && currentSegmentIndex < 215)
                 stabilizePosition();
                 stabilizeOrientation();
             }
@@ -362,7 +423,7 @@ public class CivilianCar : Car
         float x = transform.position.x;
         float y = transform.position.y;
         float z = transform.position.z;
-        transform.position = new Vector3(x, y - 0.013f, z);
+        transform.position = new Vector3(x, y - 0.01f, z);
     }
 
 
@@ -372,7 +433,7 @@ public class CivilianCar : Car
         float xA = transform.localEulerAngles.x;
         float yA = transform.localEulerAngles.y;
         float zA = transform.localEulerAngles.z;
-        transform.localEulerAngles = new Vector3(xA - 0.18f, yA, zA);
+        transform.localEulerAngles = new Vector3(xA - 0.2f, yA, zA);
     }
 
 
@@ -396,6 +457,9 @@ public class CivilianCar : Car
 
         transitionSegment1 = new Segment(start, mid);
         transitionSegment2 = new Segment(end, end);
+
+        betweenLanes = true;
+        mode.setToTransition();
     }
 
 
@@ -414,18 +478,20 @@ public class CivilianCar : Car
 
 
     // Returns whether or not the given car is currently on the same route as that of this car
-    private bool onSameRoute(int otherCarLaneIndex)
+    public bool onSameRoute(CivilianCar otherCar)
     {
-        // same lane or different lane of the same route
-        if ((Mathf.Abs(laneIndex - otherCarLaneIndex) < 2 && (laneIndex + otherCarLaneIndex) != 3))
-            return true;
-        else
+        bool thisPrimaryRoute = onPrimaryRoute();
+        bool otherPrimaryRoute = otherCar.onPrimaryRoute();
+
+        if (thisPrimaryRoute != otherPrimaryRoute)
             return false;
+        else
+            return true;
     }
 
 
     // Returns the completion status of this car in terms of segment index
-    public float getCompletionIndex()
+    private float getCompletionIndex()
     {
         int currPosSegmentIdx = (currentSegmentIndex + 1) % segments.Count;
         Vector3 segmentVector;
@@ -447,13 +513,33 @@ public class CivilianCar : Car
     }
 
 
-    // Return the position status of a certain other car as compared to this car; 
-    // true value indicates that the car with completion index 'index1' is behind 
-    // false value indicates that the car with completion index 'index1' is in front
-    public bool compareCompletionIndex(float index1, float index2)
+    // Return the position difference of a certain other car as compared to this car; 
+    // positive value indicates that this car is in front of the other car
+    // negative value indicates that the other car is in front of this car
+    public float compareCompletionIndex(CivilianCar otherCar)
     {
-        float indexDiff = (index2 - index1 + (segments.Count / 2)) % segments.Count;
+        float index1 = getCompletionIndex();
+        float index2 = otherCar.getCompletionIndex();
+        float indexDiff = (index1 - index2 + (segments.Count / 2)) % segments.Count;
         indexDiff -= (segments.Count / 2);
-        return indexDiff > 0;
+        return indexDiff;
+    }
+
+
+    // Register this car in negotiation phase queue
+    private void OnTriggerEnter(Collider other)
+    {
+        CivilianCar otherCar = other.gameObject.GetComponent<CivilianCar>();
+        if (otherCar != null)
+            mode.onEnter(otherCar);
+    }
+
+
+    // Deregister this car from negotiation phase queue
+    private void OnTriggerExit(Collider other)
+    {
+        CivilianCar otherCar = other.gameObject.GetComponent<CivilianCar>();
+        if (otherCar != null)
+            mode.onExit(otherCar);
     }
 }

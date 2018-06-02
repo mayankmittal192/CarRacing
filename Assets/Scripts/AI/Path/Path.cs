@@ -124,9 +124,10 @@ public class Path : MonoBehaviour
 
 
     // Returns a list of segment corresponding to a certain lane
-    public List<Segment> getSegments(int laneOptionIndex)
+    public List<Segment> getSegments(int laneIndex)
     {
-        List<Segment> segments = lanes[laneOptionIndex].getSegments(nodes, false);
+        nodes = getNodes();
+        List<Segment> segments = lanes[laneIndex].getSegments(nodes, false);
         return segments;
     }
 

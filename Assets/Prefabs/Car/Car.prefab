@@ -27,7 +27,6 @@ GameObject:
   m_Component:
   - component: {fileID: 400002}
   - component: {fileID: 11900000}
-  - component: {fileID: 11400008}
   m_Layer: 0
   m_Name: Blob Shadow Controller
   m_TagString: Untagged
@@ -187,17 +186,13 @@ GameObject:
   m_Component:
   - component: {fileID: 400018}
   - component: {fileID: 5400000}
-  - component: {fileID: 11400010}
-  - component: {fileID: 11400006}
-  - component: {fileID: 11400004}
-  - component: {fileID: 11400002}
   m_Layer: 12
   m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1002 &100019
 EditorExtensionImpl:
   serializedVersion: 6
@@ -1267,123 +1262,18 @@ MeshCollider:
 --- !u!1002 &6400003
 EditorExtensionImpl:
   serializedVersion: 6
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 238935c65ee0645da88242d608acfe83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fudgeScale: 1
-  theObject: {fileID: 400018}
-  terrainSize: {x: 1450, y: 1450, z: -1450}
 --- !u!1002 &11400003
 EditorExtensionImpl:
   serializedVersion: 6
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c98538d1bcf3141069cc9ab969bf3833, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sound: {fileID: 11400006}
 --- !u!1002 &11400005
 EditorExtensionImpl:
   serializedVersion: 6
---- !u!114 &11400006
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4ee81a0980b849dda48fc185416c433, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  D: {fileID: 8300000, guid: 358a19e86584c4cb3ad204f52a540ce0, type: 3}
-  DVolume: 0.565
-  E: {fileID: 8300000, guid: 5c431cc62f5eb46c19c37eb428736f12, type: 3}
-  EVolume: 0.8
-  F: {fileID: 8300000, guid: 291ab4cb0feed49129efe16d894a3c41, type: 3}
-  FVolume: 0.78
-  K: {fileID: 8300000, guid: d4ba9d49f94ec4080857fa5bfa5892bb, type: 3}
-  KVolume: 0.565
-  L: {fileID: 8300000, guid: 1deb9385d9bb347aba52b50750621bc3, type: 3}
-  LVolume: 0.61
-  wind: {fileID: 8300000, guid: 4410ede05fc6d42788cdc45025568684, type: 3}
-  windVolume: 0.8
-  tunnelSound: {fileID: 8300000, guid: 314a42e92662947288ba936608f3ed8c, type: 3}
-  tunnelVolume: 0.8
-  crashLowSpeedSound: {fileID: 8300000, guid: 97e612fd070a0490aafe8c8a37c57bb9, type: 3}
-  crashLowVolume: 0.8
-  crashHighSpeedSound: {fileID: 8300000, guid: 1a374bd9fd4ce4314a03bb96f9991ffa, type: 3}
-  crashHighVolume: 0.5
-  skidSound: {fileID: 8300000, guid: 747ef069de90640e8b656c63e4295e2d, type: 3}
-  BackgroundMusic: {fileID: 8300000, guid: 8ade038ad548349bfac2a04677ecc421, type: 3}
-  BackgroundMusicVolume: 1
 --- !u!1002 &11400007
 EditorExtensionImpl:
   serializedVersion: 6
---- !u!114 &11400008
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67573a5fcdd306b4a80b5604d7c57b0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1002 &11400009
 EditorExtensionImpl:
   serializedVersion: 6
---- !u!114 &11400010
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b83093dd792f45c988ff7a08aba9bd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  suspensionRange: 0.1
-  suspensionDamper: 50
-  suspensionSpringFront: 18500
-  suspensionSpringRear: 9250
-  brakeLights: {fileID: 2100000, guid: 4924e3c19ac0f444f9df8b5e3304659a, type: 2}
-  dragMultiplier: {x: 2, y: 5, z: 1}
-  throttle: 0
-  centerOfMass: {fileID: 400000}
-  frontWheels:
-  - {fileID: 400030}
-  - {fileID: 400028}
-  rearWheels:
-  - {fileID: 400016}
-  - {fileID: 400014}
-  topSpeed: 180
-  numberOfGears: 5
-  maximumTurn: 15
-  minimumTurn: 10
-  resetTime: 5
-  skidmarkTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  wheelCount: 0
 --- !u!1002 &11400011
 EditorExtensionImpl:
   serializedVersion: 6
